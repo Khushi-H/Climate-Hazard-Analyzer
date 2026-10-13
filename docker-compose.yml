@@ -1,0 +1,19 @@
+services:
+  mongo:
+    image: mongo:7
+    restart: unless-stopped
+    volumes:
+      - mongo_data:/data/db
+
+  app:
+    build: .
+    depends_on: [mongo]
+    ports:
+      - "8000:8000"
+    environment:
+      MONGO_URI: mongodb://mongo:27017
+      MONGO_DB: climate_hazards
+      TRUST_PROXY: "0"
+
+volumes:
+  mongo_data:
